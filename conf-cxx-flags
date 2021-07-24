@@ -1,0 +1,11 @@
+-O0
+-Wall
+-Werror
+-Wextra
+-Wno-error=unused-parameter
+-Wno-unused-parameter
+-Wpedantic
+-g
+-pedantic
+-std=c++14
+-I./include

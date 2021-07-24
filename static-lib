@@ -1,0 +1,23 @@
+#!/bin/sh
+
+fatal()
+{
+  echo "fatal: $1" 1>&2
+  exit 1
+}
+
+if [ $# -lt 2 ]
+then
+  fatal "usage: liboutput.a file1.o [file2.o ...]"
+fi
+
+CONF_OUTPUT="$1"
+shift
+
+CONF_AR=$(head -n 1 conf-ar) || fatal "could not read conf-ar"
+CONF_RANLIB=$(head -n 1 conf-ranlib) || fatal "could not read conf-ranlib"
+
+mkdir -p $(dirname "${CONF_OUTPUT}") || fatal "could not create output directory"
+
+${CONF_AR} rc "${CONF_OUTPUT}" $@ || fatal "could not produce library"
+exec ${CONF_RANLIB} "${CONF_OUTPUT}"
