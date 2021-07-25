@@ -1,23 +1,43 @@
 #!/bin/sh -ex
 
 which clang-format >/dev/null
+which clang-tidy >/dev/null
 which doxygen >/dev/null
+which cppcheck >/dev/null
 
-clang-format -i format16.cpp
-clang-format -i format32.cpp
-clang-format -i format64.cpp
-clang-format -i format8.cpp
-clang-format -i include/oxeira/format.h
-clang-format -i include/oxeira/invariants.h
-clang-format -i include/oxeira/panic.h
-clang-format -i include/oxeira/preconditions.h
-clang-format -i invariants.cpp
-clang-format -i panic.cpp
-clang-format -i preconditions.cpp
-clang-format -i testFormatU16.cpp
-clang-format -i testFormatU32.cpp
-clang-format -i testFormatU64.cpp
-clang-format -i testFormatU8.cpp
+SOURCES="
+format16.cpp
+format32.cpp
+format64.cpp
+format8.cpp
+include/oxeira/format.h
+include/oxeira/invariants.h
+include/oxeira/panic.h
+include/oxeira/preconditions.h
+invariants.cpp
+panic.cpp
+preconditions.cpp
+testFormatU16.cpp
+testFormatU32.cpp
+testFormatU64.cpp
+testFormatU8.cpp
+"
+
+for SOURCE in ${SOURCES}
+do
+  clang-format -i "${SOURCE}"
+done
+
+cppcheck \
+--check-config \
+--enable=all \
+--suppress=unusedFunction \
+--suppress=missingIncludeSystem \
+--suppress=unmatchedSuppression \
+--language=c++ \
+--std=c++14 \
+--error-exitcode=1 \
+${SOURCES}
 
 rm -rf build
 mkdir -p build

@@ -17,7 +17,7 @@
 #include <oxeira/format.h>
 #include <stdio.h>
 
-static const uint16_t u16s[] = {
+static const uint16_t numbers[] = {
     0,     1,     10,    20,    0xffff,
 
     38390, 53083, 30865, 41036, 17543,  41958, 49398, 28635, 45830, 11184,
@@ -31,37 +31,40 @@ static const uint16_t u16s[] = {
     18570, 47169, 28311, 50068, 16483,  30308, 18052, 4298,  12043, 4227,
     38357, 17218, 8150,  19374, 13861,  39086, 3538,  50070, 7665,  39274};
 
+static constexpr unsigned int numbersCount =
+    sizeof(numbers) / sizeof(numbers[0]);
+
 static void run(void)
 {
-  printf("testFormat16\n");
+  printf("testFormatU16\n");
   printf("--\n");
 
   char buffer[oxeira::formatU32Size] = {0};
 
-  for (unsigned int index = 0; index < sizeof(u16s) / sizeof(uint16_t); ++index)
+  for (unsigned int index = 0; index < numbersCount; ++index)
   {
-    buffer[oxeira::formatU16D(buffer, u16s[index])] = 0;
+    buffer[oxeira::formatU16D(buffer, numbers[index])] = 0;
     printf("%s\n", buffer);
   }
 
   printf("--\n");
-  for (unsigned int index = 0; index < sizeof(u16s) / sizeof(uint16_t); ++index)
+  for (unsigned int index = 0; index < numbersCount; ++index)
   {
-    buffer[oxeira::formatU16X(buffer, u16s[index])] = 0;
+    buffer[oxeira::formatU16X(buffer, numbers[index])] = 0;
     printf("0x%s\n", buffer);
   }
 
   printf("--\n");
-  for (unsigned int index = 0; index < sizeof(u16s) / sizeof(uint16_t); ++index)
+  for (unsigned int index = 0; index < numbersCount; ++index)
   {
-    buffer[oxeira::formatU16O(buffer, u16s[index])] = 0;
+    buffer[oxeira::formatU16O(buffer, numbers[index])] = 0;
     printf("0o%s\n", buffer);
   }
 
   printf("--\n");
-  for (unsigned int index = 0; index < sizeof(u16s) / sizeof(uint16_t); ++index)
+  for (unsigned int index = 0; index < numbersCount; ++index)
   {
-    buffer[oxeira::formatU16B(buffer, u16s[index])] = 0;
+    buffer[oxeira::formatU16B(buffer, numbers[index])] = 0;
     printf("0b%s\n", buffer);
   }
 }

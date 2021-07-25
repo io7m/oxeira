@@ -25,8 +25,8 @@ namespace oxeira
 /// and a message.
 ///
 
-typedef void (*PanicCallbackT)(const char *file, unsigned int line,
-                               const char *message);
+using PanicCallbackT = void (*)(const char *file, unsigned int line,
+                                const char *message);
 
 ///
 /// Set the global panic callback that will be executed when {@link panic} is
