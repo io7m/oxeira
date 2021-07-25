@@ -1,6 +1,7 @@
 #!/bin/sh -ex
 
 which clang-format >/dev/null
+which doxygen >/dev/null
 
 clang-format -i format16.cpp
 clang-format -i format32.cpp
@@ -66,4 +67,6 @@ build/liboxeira_format.a \
 build/liboxeira_preconditions.a \
 build/liboxeira_invariants.a \
 build/liboxeira_panic.a
+
+doxygen
 

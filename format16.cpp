@@ -1,3 +1,19 @@
+/*
+ * Copyright © 2021 Mark Raynsford <code@io7m.com> https://www.io7m.com
+ *
+ * Permission to use, copy, modify, and/or distribute this software for any
+ * purpose with or without fee is hereby granted, provided that the above
+ * copyright notice and this permission notice appear in all copies.
+ *
+ * THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+ * WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+ * MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR ANY
+ * SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+ * WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ * ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF OR
+ * IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+ */
+
 #include <oxeira/format.h>
 #include <oxeira/invariants.h>
 #include <oxeira/preconditions.h>
@@ -45,6 +61,8 @@ unsigned int formatU16D(char *str, uint16_t x)
   return length;
 }
 
+static constexpr const char HEX[] = "0123456789abcdef";
+
 unsigned int formatU16X(char *str, uint16_t x)
 {
   OXEIRA_PRECONDITION(str != nullptr);
@@ -68,16 +86,18 @@ unsigned int formatU16X(char *str, uint16_t x)
    * Render digits.
    */
 
-  for (unsigned int index = length - 1; index >= 0; --index)
+  unsigned int index = length - 1;
+  for (;;)
   {
-    char ch = '0' + (x & 15);
-    if (ch > '0' + 9)
-    {
-      ch += 'a' - '0' - 10;
-    }
-
+    const char ch = HEX[x & 15];
     str[index] = ch;
     x /= 16;
+
+    if (index == 0)
+    {
+      break;
+    }
+    --index;
   }
 
   return length;
@@ -106,11 +126,18 @@ unsigned int formatU16O(char *str, uint16_t x)
    * Render digits.
    */
 
-  for (unsigned int index = length - 1; index >= 0; --index)
+  unsigned int index = length - 1;
+  for (;;)
   {
     const char ch = '0' + (x % 8);
     str[index] = ch;
     x /= 8;
+
+    if (index == 0)
+    {
+      break;
+    }
+    --index;
   }
 
   return length;
@@ -139,11 +166,18 @@ unsigned int formatU16B(char *str, uint16_t x)
    * Render digits.
    */
 
-  for (unsigned int index = length - 1; index >= 0; --index)
+  unsigned int index = length - 1;
+  for (;;)
   {
     const char ch = '0' + (x % 2);
     str[index] = ch;
     x /= 2;
+
+    if (index == 0)
+    {
+      break;
+    }
+    --index;
   }
 
   return length;
