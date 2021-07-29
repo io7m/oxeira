@@ -5,11 +5,24 @@ which clang-tidy >/dev/null
 which doxygen >/dev/null
 which cppcheck >/dev/null
 
+TESTS="
+testBoundedArray0.cpp
+testBoundedArray1.cpp
+testBoundedArray2.cpp
+testBoundedArray3.cpp
+testBoundedArray4.cpp
+testFormatU16.cpp
+testFormatU32.cpp
+testFormatU64.cpp
+testFormatU8.cpp
+"
+
 SOURCES="
 format16.cpp
 format32.cpp
 format64.cpp
 format8.cpp
+include/oxeira/boundedArray.h
 include/oxeira/format.h
 include/oxeira/invariants.h
 include/oxeira/panic.h
@@ -17,10 +30,7 @@ include/oxeira/preconditions.h
 invariants.cpp
 panic.cpp
 preconditions.cpp
-testFormatU16.cpp
-testFormatU32.cpp
-testFormatU64.cpp
-testFormatU8.cpp
+${TESTS}
 "
 
 for SOURCE in ${SOURCES}
@@ -55,38 +65,18 @@ mkdir -p build
 ./static-lib build/liboxeira_panic.a build/panic.o
 ./static-lib build/liboxeira_preconditions.a build/preconditions.o
 
-./cxx-compile build/testFormatU64.o testFormatU64.cpp
-./cxx-compile build/testFormatU32.o testFormatU32.cpp
-./cxx-compile build/testFormatU16.o testFormatU16.cpp
-./cxx-compile build/testFormatU8.o testFormatU8.cpp
+for TEST in ${TESTS}
+do
+  WITHOUT_SUFFIX=$(echo ${TEST} | sed 's/\.cpp//g')
 
-./cxx-link build/testFormatU64 \
-build/testFormatU64.o \
+./cxx-compile "build/${WITHOUT_SUFFIX}.o" "${WITHOUT_SUFFIX}.cpp"
+./cxx-link "build/${WITHOUT_SUFFIX}" \
+"build/${WITHOUT_SUFFIX}.o" \
 build/liboxeira_format.a \
 build/liboxeira_preconditions.a \
 build/liboxeira_invariants.a \
 build/liboxeira_panic.a
-
-./cxx-link build/testFormatU32 \
-build/testFormatU32.o \
-build/liboxeira_format.a \
-build/liboxeira_preconditions.a \
-build/liboxeira_invariants.a \
-build/liboxeira_panic.a
-
-./cxx-link build/testFormatU16 \
-build/testFormatU16.o \
-build/liboxeira_format.a \
-build/liboxeira_preconditions.a \
-build/liboxeira_invariants.a \
-build/liboxeira_panic.a
-
-./cxx-link build/testFormatU8 \
-build/testFormatU8.o \
-build/liboxeira_format.a \
-build/liboxeira_preconditions.a \
-build/liboxeira_invariants.a \
-build/liboxeira_panic.a
+done
 
 doxygen
 

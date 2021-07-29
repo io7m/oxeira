@@ -1,0 +1,3 @@
+testBoundedArray1
+--
+PANIC: ./include/oxeira/boundedArray.h:97: index < dataElements
