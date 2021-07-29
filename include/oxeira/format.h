@@ -101,6 +101,9 @@ constexpr unsigned int formatU16Size = formatU16SizeBase2;
 /// plus a null terminator
 constexpr unsigned int formatU8Size = formatU8SizeBase2;
 
+/// The characters used for hexadecimal conversion.
+constexpr const char HEX[] = "0123456789abcdef";
+
 ///
 /// Format a 64-bit value in base-10.
 /// @param[str] The output string

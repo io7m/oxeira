@@ -61,8 +61,6 @@ unsigned int formatU8D(char *str, uint8_t x)
   return length;
 }
 
-static constexpr const char HEX[] = "0123456789abcdef";
-
 unsigned int formatU8X(char *str, uint8_t x)
 {
   OXEIRA_PRECONDITION(str != nullptr);
@@ -89,7 +87,7 @@ unsigned int formatU8X(char *str, uint8_t x)
   unsigned int index = length - 1;
   for (;;)
   {
-    const char ch = HEX[x & 15];
+    const char ch = oxeira::HEX[x & 15];
     str[index] = ch;
     x /= 16;
 
